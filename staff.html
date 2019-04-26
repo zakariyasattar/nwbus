@@ -17,7 +17,7 @@
     <h2 id="date"></h2></span>
 
     <p></p>
-  
+
 <!--Making canvas-->
   <center><canvas id = "myCanvas" width="960" height="400" style="border-radius: 12px;border: 1px solid black;"></canvas></center>
     <br></br>
@@ -34,7 +34,7 @@
       messagingSenderId: "354306997570"
     };
     firebase.initializeApp(config);
-    
+
     var database = firebase.database();
 
 
@@ -46,8 +46,10 @@
     var mouseX = 0;
     var mouseY = 0;
 
+		var canExecute = false;
+
     var img = new Image();
-    img.src = "https://firebasestorage.googleapis.com/v0/b/nw-bus-app.appspot.com/o/Bus%20Image%20Flipped.jpeg?alt=media&token=a823a1fd-6505-4741-a4e8-a39e4aa9bd8b";
+    img.src = "https://firebasestorage.googleapis.com/v0/b/nw-bus-app.appspot.com/o/Bus%20Image%20Flipped.png?alt=media&token=9617ecf1-d6bf-4bff-ba43-b90a69b156b8";
 
     var imageCircle = new Image();
     imageCircle.src = "http://www.transparentpng.com/download/circle/xSvrSI-circle-transparent-picture.png";
@@ -77,6 +79,52 @@
         numOptions.push(new numOption(j, i + 7, i * 10 + j + 1));
       }
     }
+
+
+    setInterval(function() { draw() }, 0.1);
+
+    var previousPos = [];
+      var busNums = firebase.database().ref('busNums');
+      busNums.once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          previousPos.push(childSnapshot.val());
+          setBus(childSnapshot.val());
+        });
+      });
+
+    setInterval(function() {
+      firebase.database().ref('busNums').remove();
+      for(var j = 0; j < busOptions.length; j++) {
+        if(busOptions[j].num != null ) {
+          firebase.database().ref('busNums/').push(busOptions[j].num + ";" + busOptions[j].x + ";" + busOptions[j].y);
+        }
+      }
+    }, 500);
+
+    function canPush(val) {
+      for(var a = 0; a < previousPos.length; a++){
+          if(val.split(";")[0] == previousPos[a].split(";")[0] && previousPos[a] != val){
+            previousPos.splice(a, 1);
+          }
+      }
+      return true;
+    }
+
+    function canPushToDB(val) {
+      var busNums = firebase.database().ref('busNums');
+
+      busNums.once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          if(val.split(";")[0] == childSnapshot.val().split(";")[0] && childSnapshot.val() != val){
+            busNums.child(childSnapshot.key).remove();
+            console.log(childSnapshot.val());
+          }
+        });
+      });
+      return true;
+    }
+
+
   //making an object for each box
     busOptions.push(new busOption(1.675, 0.6));
     busOptions.push(new busOption(1.5, 1.155));
@@ -98,6 +146,7 @@
     busOptions.push(new busOption(14.9, 4.16));
     busOptions.push(new busOption(16.73, 4.18));
     busOptions.push(new busOption(18.68, 4.16));
+    busOptions.push(new busOption(20.58, 3.56));
     busOptions.push(new busOption(21.08, 5.48));
     busOptions.push(new busOption(22.5, 5.46));
 
@@ -126,69 +175,45 @@
       }
     }
 
-		setInterval(function() { draw() }, 0.1);
-
-		var previousPos = [];
-      var busNums = firebase.database().ref('busNums');
-      busNums.once('value', function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-          previousPos.push(childSnapshot.val());
-					setBus(childSnapshot.val());
-        });
-      });
-
-    setInterval(function() {
-      firebase.database().ref('busNums').remove();
-      for(var j = 0; j < busOptions.length; j++) {
-        if(busOptions[j].num != null ) {
-          firebase.database().ref('busNums/').push(busOptions[j].num + ";" + busOptions[j].x + ";" + busOptions[j].y);
-        }
-      }
-    }, 500);
-
-		function canPush(val) {
-			for(var a = 0; a < previousPos.length; a++){
-					if(val.split(";")[0] == previousPos[a].split(";")[0] && previousPos[a] != val){
-						previousPos.splice(a, 1);
-					}
-			}
-			return true;
-		}
-
-		function canPushToDB(val) {
+    function clearAll() {
 			var busNums = firebase.database().ref('busNums');
 
-			busNums.once('value', function(snapshot) {
-				snapshot.forEach(function(childSnapshot) {
-					if(val.split(";")[0] == childSnapshot.val().split(";")[0] && childSnapshot.val() != val){
-						busNums.child(childSnapshot.key).remove();
-						console.log(childSnapshot.val());
-					}
-				});
-			});
-			return true;
-		}
-
-
-    function clearAll() {
       for(var j = 0; j < busOptions.length; j++) {
         if(busOptions[j].num != null) {
           busOptions[j].num = null;
         }
       }
+			busNums.remove();
     }
 
     function setBus(busInfoString) {
-      
+
       var stringSplit = busInfoString.split(";");
 
       for(var j = 0; j < busOptions.length; j++) {
           if(busOptions[j].x == parseFloat(stringSplit[1]) && busOptions[j].y == parseFloat(stringSplit[2])){
             busOptions[j].num = parseInt(stringSplit[0]);
-            //draw();
           }
       }
-    } 
+    }
+
+		function remove(busOption){
+			console.log(busOption);
+			var busNums = firebase.database().ref('busNums');
+			var finalString = busOption.x + ";" + busOption.y;
+
+			busNums.once('value', function(snapshot) {
+				snapshot.forEach(function(childSnapshot) {
+					var x = childSnapshot.val().split(";");
+					var objStr = x[1] + ";" + x[2];
+					console.log(objStr, finalString);
+
+					if(objStr == finalString){
+						busNums.child(childSnapshot.key).remove();
+					}
+				});
+			});
+		}
 
     function drawHolding() {
       if(holding != 'none') {
@@ -214,6 +239,8 @@
             holding = busOptions[i].num - 1;
             waitingBus = i;
             busOptions[i].num = null;
+
+						remove(busOptions[i]);
           }
         }
       } else {
@@ -231,7 +258,7 @@
               }
               busOptions[i].num = numOptions[holding].num;
 
-              
+							firebase.database().ref('busNums/').push(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y);
             }
           }
         }
@@ -252,17 +279,15 @@
         drawNumOptions();
         drawBusOptions();
         drawHolding();
-    }  
+    }
 
-      
-      
       document.getElementById('date').innerHTML = new Date().toDateString();
   }
   else{
       window.location.href="./login.html";
   }
-    
-    
+
+
   </script>
   </body>
 </html>
