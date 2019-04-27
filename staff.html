@@ -46,8 +46,6 @@
     var mouseX = 0;
     var mouseY = 0;
 
-		var canExecute = false;
-
     var img = new Image();
     img.src = "canvas_BG.png";
 
@@ -76,53 +74,6 @@
         numOptions.push(new numOption(j, i + 7, i * 10 + j + 1));
       }
     }
-
-
-    setInterval(function() { draw() }, 0.1);
-
-    var previousPos = [];
-      var busNums = firebase.database().ref('busNums');
-      busNums.once('value', function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-          previousPos.push(childSnapshot.val());
-          setBus(childSnapshot.val());
-        });
-      });
-
-    setInterval(function() {
-      firebase.database().ref('busNums').remove();
-      for(var j = 0; j < busOptions.length; j++) {
-        if(busOptions[j].num != null ) {
-          firebase.database().ref('busNums/').push(busOptions[j].num + ";" + busOptions[j].x + ";" + busOptions[j].y);
-        }
-      }
-
-    }, 500);
-
-    function canPush(val) {
-      for(var a = 0; a < previousPos.length; a++){
-          if(val.split(";")[0] == previousPos[a].split(";")[0] && previousPos[a] != val){
-            previousPos.splice(a, 1);
-          }
-      }
-      return true;
-    }
-
-    function canPushToDB(val) {
-      var busNums = firebase.database().ref('busNums');
-
-      busNums.once('value', function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-          if(val.split(";")[0] == childSnapshot.val().split(";")[0] && childSnapshot.val() != val){
-            busNums.child(childSnapshot.key).remove();
-            console.log(childSnapshot.val());
-          }
-        });
-      });
-      return true;
-    }
-
-
   //making an object for each box
     busOptions.push(new busOption(1.675, 0.6));
     busOptions.push(new busOption(1.5, 1.155));
@@ -144,7 +95,6 @@
     busOptions.push(new busOption(14.9, 4.16));
     busOptions.push(new busOption(16.73, 4.18));
     busOptions.push(new busOption(18.68, 4.16));
-    busOptions.push(new busOption(20.58, 3.56));
     busOptions.push(new busOption(21.08, 5.48));
     busOptions.push(new busOption(22.5, 5.46));
 
@@ -173,15 +123,56 @@
       }
     }
 
-    function clearAll() {
+		setInterval(function() { draw() }, 0.1);
+
+		var previousPos = [];
+      var busNums = firebase.database().ref('busNums');
+      busNums.once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          previousPos.push(childSnapshot.val());
+					setBus(childSnapshot.val());
+        });
+      });
+
+    setInterval(function() {
+      firebase.database().ref('busNums').remove();
+      for(var j = 0; j < busOptions.length; j++) {
+        if(busOptions[j].num != null ) {
+          firebase.database().ref('busNums/').push(busOptions[j].num + ";" + busOptions[j].x + ";" + busOptions[j].y);
+        }
+      }
+    }, 500);
+
+		function canPush(val) {
+			for(var a = 0; a < previousPos.length; a++){
+					if(val.split(";")[0] == previousPos[a].split(";")[0] && previousPos[a] != val){
+						previousPos.splice(a, 1);
+					}
+			}
+			return true;
+		}
+
+		function canPushToDB(val) {
 			var busNums = firebase.database().ref('busNums');
 
+			busNums.once('value', function(snapshot) {
+				snapshot.forEach(function(childSnapshot) {
+					if(val.split(";")[0] == childSnapshot.val().split(";")[0] && childSnapshot.val() != val){
+						busNums.child(childSnapshot.key).remove();
+						console.log(childSnapshot.val());
+					}
+				});
+			});
+			return true;
+		}
+
+
+    function clearAll() {
       for(var j = 0; j < busOptions.length; j++) {
         if(busOptions[j].num != null) {
           busOptions[j].num = null;
         }
       }
-			busNums.remove();
     }
 
     function setBus(busInfoString) {
@@ -191,6 +182,7 @@
       for(var j = 0; j < busOptions.length; j++) {
           if(busOptions[j].x == parseFloat(stringSplit[1]) && busOptions[j].y == parseFloat(stringSplit[2])){
             busOptions[j].num = parseInt(stringSplit[0]);
+            //draw();
           }
       }
     }
@@ -219,8 +211,6 @@
             holding = busOptions[i].num - 1;
             waitingBus = i;
             busOptions[i].num = null;
-
-						remove(busOptions[i]);
           }
         }
       } else {
