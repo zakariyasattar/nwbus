@@ -13,7 +13,7 @@
 <!--header-->
   <body>
     <span><center><h1>Niles West Bus App Staff Page</h1></center>
-    <button onclick="clearAll()" style="float:right;">Clear All Entries</button>
+    <button onclick="busNums.remove()" style="float:right;">Clear All Entries</button>
     <h2 id="date"></h2></span>
 
     <p></p>
@@ -128,17 +128,17 @@
       }
     }
 
-		setInterval(function() { draw() }, 0.1);
+		setInterval(function() { draw() }, 1);
 
     var busNums = firebase.database().ref('busNums');
      busNums.on('value', function(snapshot) {
-       clearAll();
+       clearAllLocalEntries();
       snapshot.forEach(function(childSnapshot) {
         setBus(childSnapshot.val());
       });
     });
 
-    function clearAll() {
+    function clearAllLocalEntries() {
       for(var j = 0; j < busOptions.length; j++) {
         if(busOptions[j].num != null) {
           busOptions[j].num = null;
