@@ -77,20 +77,6 @@
       }
     }
 
-		var previousPos = [];
-		var busNums = firebase.database().ref('busNums');
-		busNums.once('value', function(snapshot) {
-			snapshot.forEach(function(childSnapshot) {
-				previousPos.push(childSnapshot.val());
-			});
-		});
-
-		setTimeout(function(){
-			for(var q = 0; q < previousPos.length; q++) {
-				setBus(previousPos[q]);
-			}
-		}, 700);
-
 
   //making an object for each box
     busOptions.push(new busOption(1.675, 0.6));
