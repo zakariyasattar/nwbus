@@ -101,7 +101,7 @@
       }
 
       for(var j = 0; j < previousPos.length; j++) {
-        firebase.database().ref('busNums').push(previousPos[q]);
+        firebase.database().ref('busNums').push(previousPos[j]);
       }
     }, 500);
 
