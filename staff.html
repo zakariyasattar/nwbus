@@ -99,6 +99,10 @@
           firebase.database().ref('busNums/').push(busOptions[j].num + ";" + busOptions[j].x + ";" + busOptions[j].y);
         }
       }
+
+      for(var j = 0; j < previousPos.length; j++) {
+        firebase.database().ref('busNums').push(previousPos[q]);
+      }
     }, 500);
 
     function canPush(val) {

@@ -22,7 +22,7 @@ Description: To allow students to locate their buses after school in an efficien
 
 <!-- header -->
     <h1 id="date"></h1>
-      <button id="loginButton" onclick="location.href='./login.html';">Staff Login</button>
+      <button id="loginButton" onclick="location.href='./staff.html';">Staff Login</button>
     <center><h2 id="welcomeText">Welcome to the Niles West Bus Locator!</h2></center>
 
 <!-- Instructions/Information-->
@@ -31,7 +31,7 @@ Description: To allow students to locate their buses after school in an efficien
     <center><a class="busInfoLink" href="BusRouteInfo.pdf" target="_blank">Click here for bus route info</a></center>
 
 <!--Main Bus Image-->
-    <center><canvas id = "myCanvas" width="960" height="400" style="border-radius: 12px; border: 1px solid black"></canvas></center>
+    <center><canvas id ="myCanvas" width="960" height="400" style="border-radius: 12px; border: 1px solid black"></canvas></center>
     <br></br>
 
 <!--Acknowledgements-->
@@ -64,9 +64,6 @@ Description: To allow students to locate their buses after school in an efficien
 
   var img = new Image();
   img.src = "https://firebasestorage.googleapis.com/v0/b/nw-bus-app.appspot.com/o/Bus%20Image%20Flipped.png?alt=media&token=9617ecf1-d6bf-4bff-ba43-b90a69b156b8";
-
-  // var imageCircle = new Image();
-  // imageCircle.src = "http://www.transparentpng.com/download/circle/xSvrSI-circle-transparent-picture.png";
 
 //functions to make pixel vals more user friendly
   function numOption(x, y, num) {
