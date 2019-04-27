@@ -128,15 +128,13 @@ Description: To allow students to locate their buses after school in an efficien
     }
   }
 
-	setInterval(function() {
     var busNums = firebase.database().ref('busNums');
      busNums.on('value', function(snapshot) {
+       clearAll();
       snapshot.forEach(function(childSnapshot) {
         setBus(childSnapshot.val());
       });
     });
-    draw();
-  }, 500);
 
   function setBus(busInfoString) {
 
@@ -147,6 +145,14 @@ Description: To allow students to locate their buses after school in an efficien
           busOptions[j].num = parseInt(stringSplit[0]);
           draw();
         }
+    }
+  }
+
+  function clearAll() {
+    for(var j = 0; j < busOptions.length; j++) {
+      if(busOptions[j].num != null) {
+        busOptions[j].num = null;
+      }
     }
   }
 

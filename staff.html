@@ -144,15 +144,20 @@
 
 		setInterval(function() { draw() }, 0.1);
 
-    function clearAll() {
-			var busNums = firebase.database().ref('busNums');
+    var busNums = firebase.database().ref('busNums');
+     busNums.on('value', function(snapshot) {
+       clearAll();
+      snapshot.forEach(function(childSnapshot) {
+        setBus(childSnapshot.val());
+      });
+    });
 
+    function clearAll() {
       for(var j = 0; j < busOptions.length; j++) {
         if(busOptions[j].num != null) {
           busOptions[j].num = null;
         }
       }
-			busNums.remove();
     }
 
     function setBus(busInfoString) {
