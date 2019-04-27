@@ -81,13 +81,13 @@
     setInterval(function() { draw() }, 0.1);
 
     var previousPos = [];
-    var busNums = firebase.database().ref('busNums');
-    busNums.on('value', function(snapshot) {
-      snapshot.forEach(function(childSnapshot) {
-        previousPos.push(childSnapshot.val());
-        setBus(childSnapshot.val());
+      var busNums = firebase.database().ref('busNums');
+      busNums.once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          previousPos.push(childSnapshot.val());
+          setBus(childSnapshot.val());
+        });
       });
-    });
 
     setInterval(function() {
       firebase.database().ref('busNums').remove();
@@ -96,6 +96,7 @@
           firebase.database().ref('busNums/').push(busOptions[j].num + ";" + busOptions[j].x + ";" + busOptions[j].y);
         }
       }
+
     }, 500);
 
     function canPush(val) {
