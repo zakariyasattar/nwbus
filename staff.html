@@ -74,6 +74,59 @@
         numOptions.push(new numOption(j, i + 7, i * 10 + j + 1));
       }
     }
+<<<<<<< HEAD
+=======
+
+
+    setInterval(function() { draw() }, 0.1);
+
+    var previousPos = [];
+      var busNums = firebase.database().ref('busNums');
+      busNums.once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          previousPos.push(childSnapshot.val());
+          setBus(childSnapshot.val());
+        });
+      });
+
+    setInterval(function() {
+      for(var j = 0; j < busOptions.length; j++) {
+        if(busOptions[j].num != null ) {
+          firebase.database().ref('busNums/').push(busOptions[j].num + ";" + busOptions[j].x + ";" + busOptions[j].y);
+        }
+      }
+      firebase.database().ref('busNums').remove();
+
+      for(var j = 0; j < previousPos.length; j++) {
+        firebase.database().ref('busNums').push(previousPos[j]);
+      }
+    }, 500);
+
+    function canPush(val) {
+      for(var a = 0; a < previousPos.length; a++){
+          if(val.split(";")[0] == previousPos[a].split(";")[0] && previousPos[a] != val){
+            previousPos.splice(a, 1);
+          }
+      }
+      return true;
+    }
+
+    function canPushToDB(val) {
+      var busNums = firebase.database().ref('busNums');
+
+      busNums.once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          if(val.split(";")[0] == childSnapshot.val().split(";")[0] && childSnapshot.val() != val){
+            busNums.child(childSnapshot.key).remove();
+            console.log(childSnapshot.val());
+          }
+        });
+      });
+      return true;
+    }
+
+
+>>>>>>> parent of b0454e8... test
   //making an object for each box
     busOptions.push(new busOption(1.675, 0.6));
     busOptions.push(new busOption(1.5, 1.155));
