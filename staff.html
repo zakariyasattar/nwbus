@@ -64,7 +64,7 @@
       else {
         holdingSpan.innerHTML = "none";
       }
-    }, 1);
+    }, 200);
 
   //functions to make pixel vals more user friendly
     function numOption(x, y, num) {
@@ -251,42 +251,51 @@
               for(var j = 0; j < busOptions.length; j++) {
                 if(busOptions[j].num == numOptions[holding].num) {
                   busOptions[j].num = null;
+
                 }
               }
               if(waitingBus != null) {
-                var x = busOptions[waitingBus].num;
-
                 busOptions[waitingBus].num = busOptions[i].num;
-                busOptions[i].num = x;
-
                 waitingBus = null;
 
                 updatePos();
               }
               busOptions[i].num = numOptions[holding].num;
+              busOptions[holding].num = null;
 
-						  firebase.database().ref('busNums/').push(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y);
+					    firebase.database().ref('busNums/').push(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y);
             }
           }
         }
         holding = 'none';
+
         resetAllColors();
         waitingBus = null;
       }
     }, false);
 
-    canvas.addEventListener('mousemove', function(evt) {
-    mouseX = event.clientX-canvas.getBoundingClientRect().left;
-    mouseY = event.clientY-canvas.getBoundingClientRect().top;
-  }, false);
-
-  function resetAllColors() {
-    for(var i = 0; i < numOptions.length; i++) {
-      numOptions[i].color = "lightblue";
-      numOptions[i].textColor = "black";
+    function notAlreadyThere(val) {
+      for(var j = 0; j < busOptions.length; j++) {
+        if(busOptions[j].num == val) {
+          return false;
+        }
+      }
+      return true;
     }
-    draw();
-  }
+
+    canvas.addEventListener('mousemove', function(evt) {
+      mouseX = event.clientX-canvas.getBoundingClientRect().left;
+      mouseY = event.clientY-canvas.getBoundingClientRect().top;
+    }, false);
+
+    function resetAllColors() {
+      for(var i = 0; i < numOptions.length; i++) {
+        numOptions[i].color = "lightblue";
+        numOptions[i].textColor = "black";
+      }
+      draw();
+    }
+
     function draw() {
       ctx.drawImage(img, 0, 0, 24*unit, 10*unit);
       drawNumOptions();
