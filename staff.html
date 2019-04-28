@@ -161,17 +161,6 @@
 			return true;
 		}
 
-    function drawHolding() {
-      if(holding != 'none') {
-        ctx.fillStyle = 'lightblue';
-        ctx.fillRect(mouseX - numOptions[holding].width/2 * unit, mouseY - numOptions[holding].height/2 * unit, numOptions[holding].width * unit, numOptions[holding].height * unit);
-        ctx.font = numOptions[holding].height * unit * .6 + "px Arial";
-        ctx.fillStyle = "black";
-        ctx.textAlign = "center";
-        ctx.fillText(numOptions[holding].num, mouseX, mouseY + numOptions[holding].height * 0.2 * unit);
-      }
-    }
-
     function setBus(busInfoString) {
 
       var stringSplit = busInfoString.split(";");
@@ -249,7 +238,6 @@
   }, false);
 
     function draw() {
-      drawHolding();
         ctx.drawImage(img, 0, 0, 24*unit, 10*unit);
         drawNumOptions();
         drawBusOptions();
