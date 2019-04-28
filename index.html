@@ -12,6 +12,9 @@ Description: To allow students to locate their buses after school in an efficien
 <!--firebase-->
     <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
 
 		<span><img id="logo" src="nwlogo.png" ></img> </span>
 
@@ -142,6 +145,7 @@ Description: To allow students to locate their buses after school in an efficien
         setBus(previousPos[i]);
       }
     }
+    draw();
   });
 
   function canPush(val) {
@@ -160,7 +164,6 @@ Description: To allow students to locate their buses after school in an efficien
     for(var j = 0; j < busOptions.length; j++) {
         if(busOptions[j].x == parseFloat(stringSplit[1]) && busOptions[j].y == parseFloat(stringSplit[2])){
           busOptions[j].num = parseInt(stringSplit[0]);
-          draw();
         }
     }
   }
@@ -174,8 +177,8 @@ Description: To allow students to locate their buses after school in an efficien
   }
 
   function draw() {
-      ctx.drawImage(img, 0, 0, 24*unit, 10*unit);
-      drawBusOptions();
+    ctx.drawImage(img, 0, 0, 24 * unit, 10 * unit);
+    drawBusOptions();
   }
 
   </script>

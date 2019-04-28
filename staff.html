@@ -6,6 +6,9 @@
     <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+
 		<span><img id="logo" src="nwlogo.png" ></img> </span>
 
   </head>
@@ -13,7 +16,7 @@
 <!--header-->
   <body>
     <span><center><h1>Niles West Bus App Staff Page</h1></center>
-    <button onclick="busNums.remove()" style="float:right;">Clear All Entries</button>
+    <button onclick="busNums.remove(); updatePos()" style="float:right;">Clear All Entries</button>
     <h2 id="date"></h2></span>
 
     <p></p>
@@ -21,8 +24,10 @@
 <!--Making canvas-->
   <center><canvas id = "myCanvas" width="960" height="400" style="border-radius: 12px;border: 1px solid black;"></canvas></center>
     <br></br>
+  <p>Currently Holding: <span id="holding"></span></p>
 
 <script>
+  console.clear();
   if (sessionStorage.getItem('status') != null){
     // Initialize Firebase
     var config = {
@@ -51,6 +56,16 @@
     var img = new Image();
     img.src = "canvas_BG.png";
 
+    setInterval(function() {
+      var holdingSpan = document.getElementById('holding');
+      if(holding != "none"){
+        holdingSpan.innerHTML = numOptions[holding].num;
+      }
+      else {
+        holdingSpan.innerHTML = "none";
+      }
+    }, 1);
+
   //functions to make pixel vals more user friendly
     function numOption(x, y, num) {
       this.x = x;
@@ -58,6 +73,8 @@
       this.width = .5;
       this.height = .5;
       this.num = num;
+      this.color = "lightblue";
+      this.textColor = "black";
     }
 
     function busOption(x, y, num) {
@@ -77,6 +94,7 @@
       }
     }
 
+    var previousPos = [];
 
   //making an object for each box
     busOptions.push(new busOption(1.675, 0.6));
@@ -107,9 +125,9 @@
       for(var i = 0; i < numOptions.length; i++) {
         ctx.rect(numOptions[i].x * unit, numOptions[i].y * unit, numOptions[i].width * unit, numOptions[i].height * unit);
         ctx.stroke();
-        ctx.fillStyle = "lightblue";
+        ctx.fillStyle = numOptions[i].color;
         ctx.fillRect(numOptions[i].x * unit, numOptions[i].y * unit, numOptions[i].width * unit, numOptions[i].height * unit);
-        ctx.fillStyle = "black";
+        ctx.fillStyle = numOptions[i].textColor;
         ctx.textAlign = "center";
         ctx.fillText(numOptions[i].num, (numOptions[i].x + numOptions[i].width/2) * unit, (numOptions[i].y + numOptions[i].height * 0.7) * unit);
       }
@@ -128,21 +146,29 @@
       }
     }
 
-		setInterval(function() { draw() }, 1);
-    var previousPos = [];
-
     var busNums = firebase.database().ref('busNums');
-     busNums.on('value', function(snapshot) {
-       clearAllLocalEntries();
-      snapshot.forEach(function(childSnapshot) {
-        previousPos.push(childSnapshot.val());
+    busNums.on('value', function(snapshot) {
+      clearAllLocalEntries();
+      updatePos();
+    });
+
+    function updatePos() {
+      previousPos = [];
+
+      var busNums = firebase.database().ref('busNums');
+       busNums.once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          previousPos.push(childSnapshot.val());
+        });
       });
+
       for(var i = 0; i < previousPos.length; i++) {
         if(canPush(previousPos[i])){
           setBus(previousPos[i]);
         }
       }
-    });
+      draw()
+    }
 
     function clearAllLocalEntries() {
       for(var j = 0; j < busOptions.length; j++) {
@@ -161,19 +187,23 @@
 			return true;
 		}
 
-    function setBus(busInfoString) {
+    function setBus(busString) {
+      if(busString != undefined){
 
-      var stringSplit = busInfoString.split(";");
+        var stringSplit = busString.split(";");
 
-      for(var j = 0; j < busOptions.length; j++) {
-          if(busOptions[j].x == parseFloat(stringSplit[1]) && busOptions[j].y == parseFloat(stringSplit[2])){
-            busOptions[j].num = parseInt(stringSplit[0]);
-          }
+        for(var j = 0; j < busOptions.length; j++) {
+            if(busOptions[j].x == parseFloat(stringSplit[1]) && busOptions[j].y == parseFloat(stringSplit[2])){
+              busOptions[j].num = parseInt(stringSplit[0]);
+            }
+        }
+      }
+      else {
+        console.log(busString);
       }
     }
 
 		function remove(busOption){
-			console.log(busOption);
 			var busNums = firebase.database().ref('busNums');
 			var finalString = busOption.x + ";" + busOption.y;
 
@@ -194,19 +224,27 @@
         for(var i = 0; i < numOptions.length; i++) {
           if(mouseX > numOptions[i].x * unit && mouseY > numOptions[i].y * unit && mouseX < (numOptions[i].x + numOptions[i].width) * unit  && mouseY < (numOptions[i].y + numOptions[i].height) * unit) {
             holding = i;
+            console.log(numOptions[holding]);
             waitingBus = null;
+
+            numOptions[i].color = "red";
+            numOptions[i].textColor = "white";
+            draw();
           }
         }
         for(var i = 0; i < busOptions.length; i++) {
           if(mouseX > busOptions[i].x * unit && mouseY > busOptions[i].y * unit && mouseX < (busOptions[i].x + busOptions[i].width) * unit  && mouseY < (busOptions[i].y + busOptions[i].height) * unit && busOptions[i].num != null) {
             holding = busOptions[i].num - 1;
             waitingBus = i;
+
             busOptions[i].num = null;
 
 						remove(busOptions[i]);
           }
         }
-      } else {
+      }
+
+      else {
         if(holding != 'none') {
           for(var i = 0; i < busOptions.length; i++) {
             if(mouseX > busOptions[i].x * unit && mouseY > busOptions[i].y * unit && mouseX < (busOptions[i].x + busOptions[i].width) * unit  && mouseY < (busOptions[i].y + busOptions[i].height) * unit) {
@@ -216,8 +254,14 @@
                 }
               }
               if(waitingBus != null) {
+                var x = busOptions[waitingBus].num;
+
                 busOptions[waitingBus].num = busOptions[i].num;
+                busOptions[i].num = x;
+
                 waitingBus = null;
+
+                updatePos();
               }
               busOptions[i].num = numOptions[holding].num;
 
@@ -226,21 +270,27 @@
           }
         }
         holding = 'none';
+        resetAllColors();
         waitingBus = null;
       }
-      //draw();
     }, false);
 
     canvas.addEventListener('mousemove', function(evt) {
     mouseX = event.clientX-canvas.getBoundingClientRect().left;
     mouseY = event.clientY-canvas.getBoundingClientRect().top;
-    //draw();
   }, false);
 
+  function resetAllColors() {
+    for(var i = 0; i < numOptions.length; i++) {
+      numOptions[i].color = "lightblue";
+      numOptions[i].textColor = "black";
+    }
+    draw();
+  }
     function draw() {
-        ctx.drawImage(img, 0, 0, 24*unit, 10*unit);
-        drawNumOptions();
-        drawBusOptions();
+      ctx.drawImage(img, 0, 0, 24*unit, 10*unit);
+      drawNumOptions();
+      drawBusOptions();
     }
 
       document.getElementById('date').innerHTML = new Date().toDateString();
