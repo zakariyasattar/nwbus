@@ -219,12 +219,64 @@
 			});
 		}
 
+    // canvas.addEventListener('mousedown', function(evt) {
+    //   if(holding == 'none') {
+    //     for(var i = 0; i < numOptions.length; i++) {
+    //       if(mouseX > numOptions[i].x * unit && mouseY > numOptions[i].y * unit && mouseX < (numOptions[i].x + numOptions[i].width) * unit  && mouseY < (numOptions[i].y + numOptions[i].height) * unit) {
+    //         holding = i;
+    //         console.log(numOptions[holding]);
+    //         waitingBus = null;
+    //
+    //
+    //       }
+    //     }
+    //     for(var i = 0; i < busOptions.length; i++) {
+    //       if(mouseX > busOptions[i].x * unit && mouseY > busOptions[i].y * unit && mouseX < (busOptions[i].x + busOptions[i].width) * unit  && mouseY < (busOptions[i].y + busOptions[i].height) * unit && busOptions[i].num != null) {
+    //         holding = busOptions[i].num - 1;
+    //         waitingBus = i;
+    //
+    //         busOptions[i].num = null;
+    //
+		// 				remove(busOptions[i]);
+    //       }
+    //     }
+    //   }
+    //
+    //   else {
+    //     if(holding != 'none') {
+    //       for(var i = 0; i < busOptions.length; i++) {
+    //         if(mouseX > busOptions[i].x * unit && mouseY > busOptions[i].y * unit && mouseX < (busOptions[i].x + busOptions[i].width) * unit  && mouseY < (busOptions[i].y + busOptions[i].height) * unit) {
+    //           for(var j = 0; j < busOptions.length; j++) {
+    //             if(busOptions[j].num == numOptions[holding].num) {
+    //               busOptions[j].num = null;
+    //
+    //             }
+    //           }
+    //           if(waitingBus != null) {
+    //             busOptions[waitingBus].num = busOptions[i].num;
+    //             waitingBus = null;
+    //
+    //             updatePos();
+    //           }
+    //           busOptions[i].num = numOptions[holding].num;
+    //           busOptions[holding].num = null;
+    //
+		// 			    firebase.database().ref('busNums/').push(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y);
+    //         }
+    //       }
+    //     }
+    //     holding = 'none';
+    //
+    //     resetAllColors();
+    //     waitingBus = null;
+    //   }
+    // }, false);
+
     canvas.addEventListener('mousedown', function(evt) {
       if(holding == 'none') {
         for(var i = 0; i < numOptions.length; i++) {
           if(mouseX > numOptions[i].x * unit && mouseY > numOptions[i].y * unit && mouseX < (numOptions[i].x + numOptions[i].width) * unit  && mouseY < (numOptions[i].y + numOptions[i].height) * unit) {
             holding = i;
-            console.log(numOptions[holding]);
             waitingBus = null;
 
             numOptions[i].color = "red";
@@ -236,52 +288,33 @@
           if(mouseX > busOptions[i].x * unit && mouseY > busOptions[i].y * unit && mouseX < (busOptions[i].x + busOptions[i].width) * unit  && mouseY < (busOptions[i].y + busOptions[i].height) * unit && busOptions[i].num != null) {
             holding = busOptions[i].num - 1;
             waitingBus = i;
-
             busOptions[i].num = null;
-
-						remove(busOptions[i]);
           }
         }
-      }
-
-      else {
+      } else {
         if(holding != 'none') {
           for(var i = 0; i < busOptions.length; i++) {
             if(mouseX > busOptions[i].x * unit && mouseY > busOptions[i].y * unit && mouseX < (busOptions[i].x + busOptions[i].width) * unit  && mouseY < (busOptions[i].y + busOptions[i].height) * unit) {
               for(var j = 0; j < busOptions.length; j++) {
                 if(busOptions[j].num == numOptions[holding].num) {
                   busOptions[j].num = null;
-
                 }
               }
               if(waitingBus != null) {
                 busOptions[waitingBus].num = busOptions[i].num;
                 waitingBus = null;
-
-                updatePos();
               }
               busOptions[i].num = numOptions[holding].num;
-              busOptions[holding].num = null;
-
-					    firebase.database().ref('busNums/').push(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y);
             }
           }
         }
-        holding = 'none';
 
         resetAllColors();
+        holding = 'none';
         waitingBus = null;
       }
+      //draw();
     }, false);
-
-    function notAlreadyThere(val) {
-      for(var j = 0; j < busOptions.length; j++) {
-        if(busOptions[j].num == val) {
-          return false;
-        }
-      }
-      return true;
-    }
 
     canvas.addEventListener('mousemove', function(evt) {
       mouseX = event.clientX-canvas.getBoundingClientRect().left;
