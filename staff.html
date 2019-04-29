@@ -198,19 +198,16 @@
             }
         }
       }
-      else {
-        console.log(busString);
-      }
     }
 
 		function remove(busOption){
 			var busNums = firebase.database().ref('busNums');
-			var finalString = busOption.x + ";" + busOption.y;
+			var finalString = busOption.num + ";" + busOption.x + ";" + busOption.y;
 
 			busNums.once('value', function(snapshot) {
 				snapshot.forEach(function(childSnapshot) {
 					var x = childSnapshot.val().split(";");
-					var objStr = x[1] + ";" + x[2];
+					var objStr = x[0] + ";" + x[1] + ";" + x[2];
 
 					if(objStr == finalString){
 						busNums.child(childSnapshot.key).remove();
@@ -289,6 +286,8 @@
             holding = busOptions[i].num - 1;
             waitingBus = i;
             busOptions[i].num = null;
+
+            setTimeout(function(){ remove(busOptions[i]); }, 500);
           }
         }
       } else {
@@ -305,6 +304,8 @@
                 waitingBus = null;
               }
               busOptions[i].num = numOptions[holding].num;
+
+              setTimeout(function(){firebase.database().ref('busNums/').push(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y); }, 500);
             }
           }
         }
