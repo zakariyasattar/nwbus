@@ -27,7 +27,6 @@
   <p>Currently Holding: <span id="holding"></span></p>
 
 <script>
-  console.clear();
   if (sessionStorage.getItem('status') != null){
     // Initialize Firebase
     var config = {
@@ -94,8 +93,6 @@
       }
     }
 
-    var previousPos = [];
-
   //making an object for each box
     busOptions.push(new busOption(1.675, 0.6));
     busOptions.push(new busOption(1.5, 1.155));
@@ -147,28 +144,21 @@
     }
 
     var busNums = firebase.database().ref('busNums');
-    busNums.on('value', function(snapshot) {
-      clearAllLocalEntries();
-      updatePos();
+
+    var previousPos = [];
+
+    var busNums = firebase.database().ref('busNums');
+     busNums.once('value', function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        if(canPush(childSnapshot.val())){
+          setBus(childSnapshot.val());
+        }
+        previousPos.push(childSnapshot.val());
+        draw();
+      });
     });
 
-    function updatePos() {
-      previousPos = [];
-
-      var busNums = firebase.database().ref('busNums');
-       busNums.once('value', function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-          previousPos.push(childSnapshot.val());
-        });
-      });
-
-      for(var i = 0; i < previousPos.length; i++) {
-        if(canPush(previousPos[i])){
-          setBus(previousPos[i]);
-        }
-      }
-      draw()
-    }
+    setTimeout(function(){ draw(); }, 300);
 
     function clearAllLocalEntries() {
       for(var j = 0; j < busOptions.length; j++) {
@@ -177,6 +167,20 @@
         }
       }
     }
+
+    function canPushToDB(val) {
+			var busNums = firebase.database().ref('busNums');
+
+			busNums.once('value', function(snapshot) {
+				snapshot.forEach(function(childSnapshot) {
+					if(val.split(";")[0] == childSnapshot.val().split(";")[0] && childSnapshot.val() != val){
+						busNums.child(childSnapshot.key).remove();
+						console.log(childSnapshot.val());
+					}
+				});
+			});
+			return true;
+		}
 
     function canPush(val) {
       for(var a = 0; a < previousPos.length; a++){
@@ -287,7 +291,7 @@
             waitingBus = i;
             busOptions[i].num = null;
 
-            setTimeout(function(){ remove(busOptions[i]); }, 500);
+            remove(busOptions[i]);
           }
         }
       } else {
@@ -305,7 +309,7 @@
               }
               busOptions[i].num = numOptions[holding].num;
 
-              setTimeout(function(){firebase.database().ref('busNums/').push(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y); }, 500);
+              if(canPushToDB(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y)) {firebase.database().ref('busNums/').push(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y);}
             }
           }
         }
