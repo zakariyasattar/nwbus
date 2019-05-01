@@ -132,6 +132,8 @@ Description: To allow students to locate their buses after school in an efficien
     }
   }
 
+  draw();
+
 
   var busNums = firebase.database().ref('busNums');
    busNums.on('value', function(snapshot) {
