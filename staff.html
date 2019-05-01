@@ -16,7 +16,7 @@
 <!--header-->
   <body>
     <span><center><h1>Niles West Bus App Staff Page</h1></center>
-    <button onclick="busNums.remove(); updatePos()" style="float:right;">Clear All Entries</button>
+    <button onclick="busNums.remove(); clearAllLocalEntries();" style="float:right;">Clear All Entries</button>
     <h2 id="date"></h2></span>
 
     <p></p>
@@ -149,6 +149,7 @@
 
     var busNums = firebase.database().ref('busNums');
      busNums.once('value', function(snapshot) {
+       draw();
       snapshot.forEach(function(childSnapshot) {
         if(canPush(childSnapshot.val())){
           setBus(childSnapshot.val());
@@ -158,14 +159,12 @@
       });
     });
 
-    setTimeout(function(){ draw(); }, 300);
 
     function clearAllLocalEntries() {
       for(var j = 0; j < busOptions.length; j++) {
-        if(busOptions[j].num != null) {
-          busOptions[j].num = null;
-        }
+        busOptions[j].num = null;
       }
+      draw();
     }
 
     function canPushToDB(val) {
@@ -175,7 +174,6 @@
 				snapshot.forEach(function(childSnapshot) {
 					if(val.split(";")[0] == childSnapshot.val().split(";")[0] && childSnapshot.val() != val){
 						busNums.child(childSnapshot.key).remove();
-						console.log(childSnapshot.val());
 					}
 				});
 			});
@@ -204,9 +202,8 @@
       }
     }
 
-		function remove(busOption){
-			var busNums = firebase.database().ref('busNums');
-			var finalString = busOption.num + ";" + busOption.x + ";" + busOption.y;
+		function remove(busOption, num){
+			var finalString = num + ";" + busOption.x + ";" + busOption.y;
 
 			busNums.once('value', function(snapshot) {
 				snapshot.forEach(function(childSnapshot) {
@@ -219,59 +216,6 @@
 				});
 			});
 		}
-
-    // canvas.addEventListener('mousedown', function(evt) {
-    //   if(holding == 'none') {
-    //     for(var i = 0; i < numOptions.length; i++) {
-    //       if(mouseX > numOptions[i].x * unit && mouseY > numOptions[i].y * unit && mouseX < (numOptions[i].x + numOptions[i].width) * unit  && mouseY < (numOptions[i].y + numOptions[i].height) * unit) {
-    //         holding = i;
-    //         console.log(numOptions[holding]);
-    //         waitingBus = null;
-    //
-    //
-    //       }
-    //     }
-    //     for(var i = 0; i < busOptions.length; i++) {
-    //       if(mouseX > busOptions[i].x * unit && mouseY > busOptions[i].y * unit && mouseX < (busOptions[i].x + busOptions[i].width) * unit  && mouseY < (busOptions[i].y + busOptions[i].height) * unit && busOptions[i].num != null) {
-    //         holding = busOptions[i].num - 1;
-    //         waitingBus = i;
-    //
-    //         busOptions[i].num = null;
-    //
-		// 				remove(busOptions[i]);
-    //       }
-    //     }
-    //   }
-    //
-    //   else {
-    //     if(holding != 'none') {
-    //       for(var i = 0; i < busOptions.length; i++) {
-    //         if(mouseX > busOptions[i].x * unit && mouseY > busOptions[i].y * unit && mouseX < (busOptions[i].x + busOptions[i].width) * unit  && mouseY < (busOptions[i].y + busOptions[i].height) * unit) {
-    //           for(var j = 0; j < busOptions.length; j++) {
-    //             if(busOptions[j].num == numOptions[holding].num) {
-    //               busOptions[j].num = null;
-    //
-    //             }
-    //           }
-    //           if(waitingBus != null) {
-    //             busOptions[waitingBus].num = busOptions[i].num;
-    //             waitingBus = null;
-    //
-    //             updatePos();
-    //           }
-    //           busOptions[i].num = numOptions[holding].num;
-    //           busOptions[holding].num = null;
-    //
-		// 			    firebase.database().ref('busNums/').push(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y);
-    //         }
-    //       }
-    //     }
-    //     holding = 'none';
-    //
-    //     resetAllColors();
-    //     waitingBus = null;
-    //   }
-    // }, false);
 
     canvas.addEventListener('mousedown', function(evt) {
       if(holding == 'none') {
@@ -289,9 +233,10 @@
           if(mouseX > busOptions[i].x * unit && mouseY > busOptions[i].y * unit && mouseX < (busOptions[i].x + busOptions[i].width) * unit  && mouseY < (busOptions[i].y + busOptions[i].height) * unit && busOptions[i].num != null) {
             holding = busOptions[i].num - 1;
             waitingBus = i;
+            var num = busOptions[i].num;
             busOptions[i].num = null;
 
-            remove(busOptions[i]);
+            remove(busOptions[i], num);
           }
         }
       } else {
@@ -305,6 +250,7 @@
               }
               if(waitingBus != null) {
                 busOptions[waitingBus].num = busOptions[i].num;
+                completePush();
                 waitingBus = null;
               }
               busOptions[i].num = numOptions[holding].num;
@@ -332,6 +278,16 @@
         numOptions[i].textColor = "black";
       }
       draw();
+    }
+
+    function completePush() {
+      busNums.remove();
+
+      for(var j = 0; j < busOptions.length; j++) {
+        if(busOptions[j].num != null && canPushToDB(busOptions[j].num + ";" + busOptions[j].x + ";" + busOptions[j].y)) {
+          busNums.push(busOptions[j].num + ";" + busOptions[j].x + ";" + busOptions[j].y);
+        }
+      }
     }
 
     function draw() {

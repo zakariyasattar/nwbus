@@ -12,7 +12,7 @@ Description: To allow students to locate their buses after school in an efficien
 <!--firebase-->
     <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-    
+
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
 
@@ -132,30 +132,15 @@ Description: To allow students to locate their buses after school in an efficien
     }
   }
 
-  var previousPos = [];
 
   var busNums = firebase.database().ref('busNums');
    busNums.on('value', function(snapshot) {
      clearAll();
     snapshot.forEach(function(childSnapshot) {
-      previousPos.push(childSnapshot.val());
+      setBus(childSnapshot.val());
     });
-    for(var i = 0; i < previousPos.length; i++) {
-      if(canPush(previousPos[i])){
-        setBus(previousPos[i]);
-      }
-    }
     draw();
   });
-
-  function canPush(val) {
-    for(var a = 0; a < previousPos.length; a++){
-        if(val.split(";")[0] == previousPos[a].split(";")[0] && previousPos[a] != val){
-          previousPos.splice(a, 1);
-        }
-    }
-    return true;
-  }
 
   function setBus(busInfoString) {
 
@@ -170,9 +155,7 @@ Description: To allow students to locate their buses after school in an efficien
 
   function clearAll() {
     for(var j = 0; j < busOptions.length; j++) {
-      if(busOptions[j].num != null) {
-        busOptions[j].num = null;
-      }
+      busOptions[j].num = null;
     }
   }
 
