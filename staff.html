@@ -53,7 +53,7 @@
 		var canExecute = false;
 
     var img = new Image();
-    img.src = "https://i.imgur.com/ZgwCoXp.png";
+    img.src = "canvas_BG.png";
 
     setInterval(function() {
       var holdingSpan = document.getElementById('holding');
@@ -94,30 +94,29 @@
     }
 
   //making an object for each box
-  busOptions.push(new busOption(1.675, 0.6));
-  busOptions.push(new busOption(1.5, 1.155));
-  busOptions.push(new busOption(3.4, 1.23));
-  busOptions.push(new busOption(3.175, 1.83));
-  busOptions.push(new busOption(5.125, 1.81));
-  busOptions.push(new busOption(4.93, 2.41));
-  busOptions.push(new busOption(6.68, 2.48));
-  busOptions.push(new busOption(6.58, 3.1));
-  busOptions.push(new busOption(8.5, 3.1));
-  busOptions.push(new busOption(8.3, 3.7));
-  busOptions.push(new busOption(10.25, 3.56));
-  busOptions.push(new busOption(10.28, 4.21));
-  busOptions.push(new busOption(12.88, 3.56));
-  busOptions.push(new busOption(14.85, 3.51));
-  busOptions.push(new busOption(16.63, 3.56));
-  busOptions.push(new busOption(18.8, 3.63));
-  busOptions.push(new busOption(12.85, 4.18));
-  busOptions.push(new busOption(14.9, 4.16));
-  busOptions.push(new busOption(16.73, 4.18));
-  busOptions.push(new busOption(18.68, 4.16));
-  busOptions.push(new busOption(20.58, 3.56));
-  busOptions.push(new busOption(20.58, 4.16));
-  busOptions.push(new busOption(21.08, 5.48));
-  busOptions.push(new busOption(22.5, 5.46));
+    busOptions.push(new busOption(1.675, 0.6));
+    busOptions.push(new busOption(1.5, 1.155));
+    busOptions.push(new busOption(3.4, 1.23));
+    busOptions.push(new busOption(3.175, 1.83));
+    busOptions.push(new busOption(5.125, 1.81));
+    busOptions.push(new busOption(4.93, 2.41));
+    busOptions.push(new busOption(6.68, 2.48));
+    busOptions.push(new busOption(6.58, 3.1));
+    busOptions.push(new busOption(8.5, 3.1));
+    busOptions.push(new busOption(8.3, 3.7));
+    busOptions.push(new busOption(10.25, 3.56));
+    busOptions.push(new busOption(10.28, 4.21));
+    busOptions.push(new busOption(12.88, 3.56));
+    busOptions.push(new busOption(14.85, 3.51));
+    busOptions.push(new busOption(16.63, 3.56));
+    busOptions.push(new busOption(18.8, 3.63));
+    busOptions.push(new busOption(12.85, 4.18));
+    busOptions.push(new busOption(14.9, 4.16));
+    busOptions.push(new busOption(16.73, 4.18));
+    busOptions.push(new busOption(18.68, 4.16));
+    busOptions.push(new busOption(20.58, 3.56));
+    busOptions.push(new busOption(21.08, 5.48));
+    busOptions.push(new busOption(22.5, 5.46));
 
     function drawNumOptions() {
       for(var i = 0; i < numOptions.length; i++) {
@@ -251,7 +250,6 @@
               }
               if(waitingBus != null) {
                 busOptions[waitingBus].num = busOptions[i].num;
-
                 completePush();
                 waitingBus = null;
               }
@@ -284,7 +282,6 @@
 
     function completePush() {
       busNums.remove();
-      clearAllLocalEntries();
 
       for(var j = 0; j < busOptions.length; j++) {
         if(busOptions[j].num != null && canPushToDB(busOptions[j].num + ";" + busOptions[j].x + ";" + busOptions[j].y)) {
