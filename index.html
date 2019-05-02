@@ -66,7 +66,7 @@ Description: To allow students to locate their buses after school in an efficien
   var mouseY = 0;
 
   var img = new Image();
-  img.src = "canvas_BG.png";
+  img.src = "https://i.imgur.com/ZgwCoXp.png";
 
 //functions to make pixel vals more user friendly
   function numOption(x, y, num) {
@@ -94,7 +94,8 @@ Description: To allow students to locate their buses after school in an efficien
       numOptions.push(new numOption(j, i + 7, i * 10 + j + 1));
     }
   }
-//making an object for each box
+  
+  //making an object for each box
   busOptions.push(new busOption(1.675, 0.6));
   busOptions.push(new busOption(1.5, 1.155));
   busOptions.push(new busOption(3.4, 1.23));
@@ -116,6 +117,7 @@ Description: To allow students to locate their buses after school in an efficien
   busOptions.push(new busOption(16.73, 4.18));
   busOptions.push(new busOption(18.68, 4.16));
   busOptions.push(new busOption(20.58, 3.56));
+  busOptions.push(new busOption(20.58, 4.16));
   busOptions.push(new busOption(21.08, 5.48));
   busOptions.push(new busOption(22.5, 5.46));
 
