@@ -40,7 +40,7 @@ Description: To allow students to locate their buses after school in an efficien
 <!-- Instructions/Information-->
     <center><p class="instructions">If you see your bus number below, your bus has arrived at that location! (Buses leave promptly at 3:40 PM)</p></center>
 
-    <center><a class="busInfoLink" href="BusRouteInfo.pdf" target="_blank">Click here for bus route info</a></center>
+    <center><a id="pdf" class="busInfoLink" href="BusRouteInfo.pdf" target="_blank">Click here for bus route info</a></center>
 
 <!--Main Bus Image-->
     <center><canvas id ="myCanvas" width="960" height="400" style="border-radius: 12px; border: 1px solid black"></canvas></center>
@@ -82,6 +82,12 @@ Description: To allow students to locate their buses after school in an efficien
   var scale = width / baseLine;
   console.log(scale);
 
+  var pdf = document.getElementById('pdf');
+  var rect = pdf.getBoundingClientRect();
+  var pos = rect.top;
+
+  canvas.style.position = "relative";
+  canvas.style.top = pos + "px";
   canvas.style.transform = "scale(" + scale + ")";
 
 //functions to make pixel vals more user friendly
@@ -92,6 +98,16 @@ Description: To allow students to locate their buses after school in an efficien
     this.height = .5;
     this.num = num;
   }
+
+  function findPos(element) {
+  if (element) {
+    var parentPos = findPos(element.offsetParent);
+    return parseInt(parentPos.Y + element.offsetTop);
+  }
+  else {
+    return 0;
+  }
+}
 
   function busOption(x, y, num) {
     this.x = x;
