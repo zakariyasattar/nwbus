@@ -18,6 +18,17 @@ Description: To allow students to locate their buses after school in an efficien
 
 		<span><img id="logo" src="nwlogo.png" ></img> </span>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133322423-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-133322423-2');
+    </script>
+
+
   </head>
 
 
@@ -39,7 +50,7 @@ Description: To allow students to locate their buses after school in an efficien
 
 <!--Acknowledgements-->
 
-    <center><footer>Christian M. '21 (User Interface), Zakariya S. '21 (Database & Security), Azam A. '19 (Invention/Project Management)</footer></center>
+    <center><footer>Christian M. '21 (User Interface), Zakariya S. '21 (Backend & Security), Azam A. '19 (Invention/Project Management)</footer></center>
 
 <script>
 
@@ -94,7 +105,7 @@ Description: To allow students to locate their buses after school in an efficien
       numOptions.push(new numOption(j, i + 7, i * 10 + j + 1));
     }
   }
-  
+
   //making an object for each box
   busOptions.push(new busOption(1.675, 0.6));
   busOptions.push(new busOption(1.5, 1.155));
