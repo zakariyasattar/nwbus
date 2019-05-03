@@ -28,9 +28,7 @@ Description: To allow students to locate their buses after school in an efficien
       gtag('config', 'UA-133322423-2');
     </script>
 
-
   </head>
-
 
   <body>
 
@@ -67,7 +65,6 @@ Description: To allow students to locate their buses after school in an efficien
 
   var database = firebase.database();
 
-
   var canvas = document.getElementById("myCanvas");
   var ctx = canvas.getContext("2d");
   var unit = canvas.height/10;
@@ -78,6 +75,14 @@ Description: To allow students to locate their buses after school in an efficien
 
   var img = new Image();
   img.src = "https://i.imgur.com/ZgwCoXp.png";
+
+  var width = window.innerWidth;
+  var baseLine = 1440 / 1.5;
+
+  var scale = width / baseLine;
+  console.log(scale);
+
+  canvas.style.transform = "scale(" + scale + ")";
 
 //functions to make pixel vals more user friendly
   function numOption(x, y, num) {
@@ -145,7 +150,6 @@ Description: To allow students to locate their buses after school in an efficien
     }
   }
 
-
   var busNums = firebase.database().ref('busNums');
    busNums.on('value', function(snapshot) {
      clearAll();
@@ -156,7 +160,6 @@ Description: To allow students to locate their buses after school in an efficien
   });
 
   function setBus(busInfoString) {
-
     var stringSplit = busInfoString.split(";");
 
     for(var j = 0; j < busOptions.length; j++) {
