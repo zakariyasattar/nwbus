@@ -44,12 +44,6 @@ Description: To allow students to locate their buses after school in an efficien
 
 <!--Main Bus Image-->
     <center><canvas id ="myCanvas" width="960" height="400" style="border-radius: 12px; border: 1px solid black"></canvas></center>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
 
 <!--Acknowledgements-->
 <center><footer>Christian M. '21 (User Interface), Zakariya S. '21 (Backend & Security), Azam A. '19 (Invention/Project Management)</footer></center>
@@ -81,18 +75,12 @@ Description: To allow students to locate their buses after school in an efficien
   img.src = "https://i.imgur.com/ZgwCoXp.png";
 
   var width = window.innerWidth-20;
-  var baseLine = 1440 / 1.5;
+  var baseLine = 1440 / 1.23;
 
   var scale = width / baseLine;
   console.log(scale);
 
-  var pdf = document.getElementById('pdf');
-  var rect = pdf.getBoundingClientRect();
-  var pos = rect.top;
-
-  canvas.style.position = "relative";
-  canvas.style.top = pos + 1 + "px";
-  canvas.style.transform = "scale(" + scale + ")";
+  document.body.style.transform = "scale(" + scale + ")";
 
 //functions to make pixel vals more user friendly
   function numOption(x, y, num) {
