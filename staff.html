@@ -16,7 +16,7 @@
 <!--header-->
   <body>
     <span><center><h1>Niles West Bus App Staff Page</h1></center>
-    <button onclick="busNums.remove(); clearAllLocalEntries();" style="float:right;">Clear All Entries</button>
+    <button onclick="busNums.remove(); clearAllLocalEntries(); resetAllColors()" style="float:right;">Clear All Entries</button>
     <h2 id="date"></h2></span>
 
     <p></p>
@@ -265,7 +265,7 @@
               busOptions[i].num = numOptions[holding].num;
               numOptions[holding].color = "lightgray";
               numOptions[holding].textColor = "black";
-              
+
               if(canPushToDB(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y)) {firebase.database().ref('busNums/').push(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y);}
             }
           }
@@ -299,6 +299,13 @@
           numOptions[i].color = "lightblue";
           numOptions[i].textColor = "black";
         }
+      }
+      draw();
+    }
+    function resetAllColors() {
+      for(var i = 0; i < numOptions.length; i++) {
+          numOptions[i].color = "lightblue";
+          numOptions[i].textColor = "black";
       }
       draw();
     }
