@@ -51,6 +51,7 @@
     var mouseY = 0;
 
 		var canExecute = false;
+    var numOptionsNums = [];
 
     var img = new Image();
     img.src = "https://i.imgur.com/ZgwCoXp.png";
@@ -65,7 +66,7 @@
       }
     }, 200);
 
-  //functions to make pixel vals more user friendly
+    //functions to make pixel vals more user friendly
     function numOption(x, y, num) {
       this.x = x;
       this.y = y;
@@ -90,6 +91,7 @@
     for(var i = 0; i < 3; i++) {
       for(var j = 0; j < 10; j++) {
         numOptions.push(new numOption(j, i + 7, i * 10 + j + 1));
+        numOptionsNums.push(j);
       }
     }
 
@@ -191,13 +193,19 @@
 
     function setBus(busString) {
       if(busString != undefined){
-
         var stringSplit = busString.split(";");
 
         for(var j = 0; j < busOptions.length; j++) {
-            if(busOptions[j].x == parseFloat(stringSplit[1]) && busOptions[j].y == parseFloat(stringSplit[2])){
-              busOptions[j].num = parseInt(stringSplit[0]);
-            }
+          if(busOptions[j].x == parseFloat(stringSplit[1]) && busOptions[j].y == parseFloat(stringSplit[2])){
+            busOptions[j].num = parseInt(stringSplit[0]);
+          }
+        }
+
+        for(var j = 0; j < numOptions.length; j++) {
+          if(numOptions[j].num == stringSplit[0]) {
+            numOptions[j].color = "lightgray";
+            numOptions[j].textColor = "black";
+          }
         }
       }
     }
@@ -237,6 +245,7 @@
             busOptions[i].num = null;
 
             remove(busOptions[i], num);
+            removeGreen(num);
           }
         }
       } else {
@@ -254,13 +263,15 @@
                 waitingBus = null;
               }
               busOptions[i].num = numOptions[holding].num;
-
+              numOptions[holding].color = "lightgray";
+              numOptions[holding].textColor = "black";
+              
               if(canPushToDB(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y)) {firebase.database().ref('busNums/').push(busOptions[i].num + ";" + busOptions[i].x + ";" + busOptions[i].y);}
             }
           }
         }
 
-        resetAllColors();
+        resetAllRedColors();
         holding = 'none';
         waitingBus = null;
       }
@@ -272,17 +283,28 @@
       mouseY = event.clientY-canvas.getBoundingClientRect().top;
     }, false);
 
-    function resetAllColors() {
+    function removeGreen(num) {
+      for(var i = 0; i < numOptionsNums.length; i++) {
+        if(numOptionsNums[i] == num) {
+          numOptions[i-1].color = "lightblue";
+          numOptions[i-1].textColor = "black";
+        return;
+        }
+      }
+    }
+
+    function resetAllRedColors() {
       for(var i = 0; i < numOptions.length; i++) {
-        numOptions[i].color = "lightblue";
-        numOptions[i].textColor = "black";
+        if(numOptions[i].color == "red"){
+          numOptions[i].color = "lightblue";
+          numOptions[i].textColor = "black";
+        }
       }
       draw();
     }
 
     function completePush() {
       busNums.remove();
-
       for(var j = 0; j < busOptions.length; j++) {
         if(busOptions[j].num != null && canPushToDB(busOptions[j].num + ";" + busOptions[j].x + ";" + busOptions[j].y)) {
           busNums.push(busOptions[j].num + ";" + busOptions[j].x + ";" + busOptions[j].y);
