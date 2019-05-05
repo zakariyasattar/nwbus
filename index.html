@@ -79,7 +79,9 @@ Description: To allow students to locate their buses after school in an efficien
 
   var scale = width / baseLine;
 
-  document.body.style.transform = "scale(" + scale + ")";
+  if(window.innerWidth > 1700) {
+      document.body.style.transform = "scale(" + scale + ")";
+  }
 
 //functions to make pixel vals more user friendly
   function numOption(x, y, num) {
