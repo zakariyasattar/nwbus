@@ -38,7 +38,8 @@ Description: To allow students to locate their buses after school in an efficien
     <center><h2 id="welcomeText">Welcome to the Niles West Bus Locator!</h2></center>
 
 <!-- Instructions/Information-->
-    <center><p class="instructions">If you see your bus number below, your bus has arrived at that location! (Buses leave promptly at 3:40 PM)</p></center>
+    <center><p id="instruct" class="instructions">If you see your bus number below, your bus has arrived at that location! (Buses leave promptly at 3:40 PM)</p></center>
+    <center><p style="display: none" id="alt-text">If you see your bus number below, your bus has arrived at that location! (Buses leave promptly at 3:40 PM) <br/> Christian M. '21 (User Interface), Zakariya S. '21 (Backend & Security), Azam A. '19 (Invention/Project Management)</footer></center>
 
     <center><a id="pdf" class="busInfoLink" href="BusRouteInfo.pdf" target="_blank">Click here for bus route info</a></center>
 
@@ -46,7 +47,7 @@ Description: To allow students to locate their buses after school in an efficien
     <center><canvas id ="myCanvas" width="960" height="400" style="border-radius: 12px; border: 1px solid black"></canvas></center>
 
 <!--Acknowledgements-->
-<center><footer>Christian M. '21 (User Interface), Zakariya S. '21 (Backend & Security), Azam A. '19 (Invention/Project Management)</footer></center>
+<center><footer id="acknowledgements">Christian M. '21 (User Interface), Zakariya S. '21 (Backend & Security), Azam A. '19 (Invention/Project Management)</footer></center>
 
 <script>
 
@@ -75,12 +76,22 @@ Description: To allow students to locate their buses after school in an efficien
   img.src = "https://i.imgur.com/ZgwCoXp.png";
 
   var width = window.innerWidth-20;
-  var baseLine = 1440 / 1.23;
+  var baseLine = 1440 / 1.5;
 
   var scale = width / baseLine;
 
-  if(window.innerWidth > 1700) {
-      document.body.style.transform = "scale(" + scale + ")";
+  if(window.innerWidth > 2000) {
+      canvas.style.transform = "scale(" + scale + ")";
+      canvas.style.position = "relative";
+      canvas.style.top = "26vh";
+
+      document.getElementById('pdf').style.display = "none";
+      document.getElementById('instruct').style.display = "none";
+      document.getElementById('loginButton').style.display = "none";
+
+      document.getElementById('acknowledgements').style.display = "none";
+      document.getElementById('alt-text').style.display = "initial";
+      document.getElementById('alt-text').style.fontSize = "25px";
   }
 
 //functions to make pixel vals more user friendly
