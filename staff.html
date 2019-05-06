@@ -245,7 +245,7 @@
             busOptions[i].num = null;
 
             remove(busOptions[i], num);
-            removeGreen(num);
+            removeGray(num);
           }
         }
       } else {
@@ -283,12 +283,12 @@
       mouseY = event.clientY-canvas.getBoundingClientRect().top;
     }, false);
 
-    function removeGreen(num) {
+    function removeGray(num) {
       for(var i = 0; i < numOptionsNums.length; i++) {
         if(numOptionsNums[i] == num) {
           numOptions[i-1].color = "lightblue";
           numOptions[i-1].textColor = "black";
-        return;
+          return;
         }
       }
     }
