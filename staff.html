@@ -16,7 +16,8 @@
 <!--header-->
   <body>
     <span><center><h1>Niles West Bus App Staff Page</h1></center>
-    <button onclick="busNums.remove(); clearAllLocalEntries(); resetAllColors()" style="float:right;">Clear All Entries</button>
+    <button onclick="busNums.remove(); clearAllLocalEntries()" style="float:right;">Clear All Entries</button>
+    <button onclick="resetAllColors()" style="float:right;">Clear All Colors</button>
     <h2 id="date"></h2></span>
 
     <p></p>
@@ -90,8 +91,15 @@
 
     for(var i = 0; i < 3; i++) {
       for(var j = 0; j < 10; j++) {
-        numOptions.push(new numOption(j, i + 7, i * 10 + j + 1));
-        numOptionsNums.push(j);
+        var num = i * 10 + j + 1;
+        if(num != 25) {
+          numOptions.push(new numOption(j, i + 7, num));
+          numOptionsNums.push(j);
+        }
+        else {
+          numOptions.push(new numOption(j, i + 7, "17O"));
+          numOptionsNums.push("17O");
+        }
       }
     }
 
@@ -197,7 +205,7 @@
 
         for(var j = 0; j < busOptions.length; j++) {
           if(busOptions[j].x == parseFloat(stringSplit[1]) && busOptions[j].y == parseFloat(stringSplit[2])){
-            busOptions[j].num = parseInt(stringSplit[0]);
+            busOptions[j].num = stringSplit[0];
           }
         }
 
@@ -282,16 +290,6 @@
       mouseX = event.clientX-canvas.getBoundingClientRect().left;
       mouseY = event.clientY-canvas.getBoundingClientRect().top;
     }, false);
-
-    function removeGray(num) {
-      for(var i = 0; i <= numOptionsNums.length; i++) {
-        if(numOptionsNums[i] == num) {
-          numOptions[i-1].color = "lightblue";
-          numOptions[i-1].textColor = "black";
-          return;
-        }
-      }
-    }
 
     function resetAllRedColors() {
       for(var i = 0; i < numOptions.length; i++) {
