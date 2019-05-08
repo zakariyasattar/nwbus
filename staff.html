@@ -92,14 +92,14 @@
     for(var i = 0; i < 3; i++) {
       for(var j = 0; j < 10; j++) {
         var num = i * 10 + j + 1;
-        if(num != 25) {
+        // if(num != 25) {
+        //   numOptions.push(new numOption(j, i + 7, num));
+        //   numOptionsNums.push(j);
+        // }
+        // else {
           numOptions.push(new numOption(j, i + 7, num));
-          numOptionsNums.push(j);
-        }
-        else {
-          numOptions.push(new numOption(j, i + 7, "17O"));
-          numOptionsNums.push("17O");
-        }
+          numOptionsNums.push(num);
+        //}
       }
     }
 
