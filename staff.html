@@ -97,8 +97,10 @@
         //   numOptionsNums.push(j);
         // }
         // else {
-          numOptions.push(new numOption(j, i + 7, num));
+        if(num != 4 && num != 9 && num != 14 && num != 16 && num != 29 && num != 30) {
+	  numOptions.push(new numOption(j, i + 7, num));
           numOptionsNums.push(num);
+      	}
         //}
       }
     }
