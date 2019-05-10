@@ -173,6 +173,17 @@
       }
     }
   }
+	
+  function drawBusesHere() {
+    for(var i = 0; i < busOptions.length; i++) {
+      var busesHere = "";
+      if(busOptions[i].num != undefined) {
+        busesHere += busOptions[i].num + " ";
+      }
+    }
+    ctx.font = 0.3 + "px Arial";
+    ctx.fillText(busesHere, 0*unit, 10*unit);
+  }
 
   var busNums = firebase.database().ref('busNums');
    busNums.on('value', function(snapshot) {
