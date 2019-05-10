@@ -1,15 +1,21 @@
 <!--
-Original Developers: Azam A. '19, Zak S. '21, Chris M. '21
-Made for: Niles West High School or other high schools
-Description: To allow students to locate their buses after school in an efficient manner. Displays location of buses in lineup by number via staff input.
+  Original Developers: Azam A. '19, Zak S. '21, Chris M. '21
+
+  Made for: Niles West High School or other high schools
+
+  Description: To allow students to locate their buses after
+  school in an efficient manner. Displays location of buses
+  in lineup by number via staff input.
 -->
 
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" type="text/css" href="indexStyle.css">
     <title>NW Bus App</title>
-<!--firebase-->
+
+    <!--firebase-->
     <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 
@@ -82,7 +88,7 @@ Description: To allow students to locate their buses after school in an efficien
 
   var scale = width / baseLine;
 
-  if(window.innerWidth > 2000) {
+  if(window.innerWidth > 1700) {
       canvas.style.transform = "scale(" + scale + ")";
       canvas.style.position = "relative";
       canvas.style.top = "26vh";
