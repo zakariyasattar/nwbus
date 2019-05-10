@@ -165,8 +165,6 @@
 
   function drawBusOptions() {
     for(var i = 0; i < busOptions.length; i++) {
-      ctx.fillStyle = "yellow";
-      ctx.fillRect(busOptions[i].x * unit, busOptions[i].y * unit, busOptions[i].width * unit, busOptions[i].height * unit);
       if(busOptions[i].num != undefined) {
         ctx.font = busOptions[i].height * unit * .6 + "px Arial";
         ctx.fillStyle = "black";
