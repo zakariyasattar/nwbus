@@ -176,9 +176,9 @@
 	
   function drawBusesHere() {
     for(var i = 0; i < busOptions.length; i++) {
-      var busesHere = "";
+      var busesHere = "Buses here:";
       if(busOptions[i].num != undefined) {
-        busesHere += busOptions[i].num + " ";
+        busesHere += " " + busOptions[i].num;
       }
     }
     ctx.font = 0.3 + "px Arial";
