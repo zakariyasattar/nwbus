@@ -60,15 +60,15 @@
 
 <script>
 function getOrientation(){
-    var orientation = window.innerWidth > window.innerHeight ? "Landscape" : "Portrait";
+    var orientation = window.innerWidth > window.innerHeight ? "landscape" : "portrait";
     return orientation;
 }
 
  window.onresize = function(){
    var orientation = getOrientation();
+   alert
 
    if(orientation == "landscape") {
-     alert(orientation);
      overlay.style.display = "none";
      body.style.overflowX = "auto";
      body.style.overflowY = "auto";
