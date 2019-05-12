@@ -59,22 +59,19 @@
 </div>
 
 <script>
-  if(overlay.style.display != "hidden") {
-    body.style.overflowX = "hidden";
-    body.style.overflowY = "hidden";
-  }
-  else {
-    body.style.overflowX = "auto";
-    body.style.overflowY = "auto";
-  }
-
   function doOnOrientationChange() {
     switch(window.orientation) {
       case -90 || 90:
-        alert('landscape');
+        alert("portrait");
+        overlay.style.display = "none";
+        body.style.overflowX = "auto";
+        body.style.overflowY = "auto";
         break;
       default:
-        alert('portrait');
+      alert("portrait");
+        overlay.style.display = "initial";
+        body.style.overflowX = "hidden";
+        body.style.overflowY = "hidden";
         break;
     }
 }
