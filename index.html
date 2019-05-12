@@ -62,16 +62,15 @@
   function doOnOrientationChange() {
     switch(window.orientation) {
       case 180:
+        overlay.style.display = "initial";
+        body.style.overflowX = "hidden";
+        body.style.overflowY = "hidden";
+        break;
+      case 90:
         alert("landscape");
         overlay.style.display = "none";
         body.style.overflowX = "auto";
         body.style.overflowY = "auto";
-        break;
-      case 90:
-        alert("hello");
-        overlay.style.display = "initial";
-        body.style.overflowX = "hidden";
-        body.style.overflowY = "hidden";
         break;
     }
 }
