@@ -51,7 +51,11 @@
 
 <!--Main Bus Image-->
     <center><canvas id ="myCanvas" width="960" height="400" style="border-radius: 12px; border: 1px solid black"></canvas></center>
-    <center><div id="overlay"><p style="color: white;">TESTING</p></div></center>
+
+    <div id="overlay">
+      <center><img style="color: white; position: relative; top: 35vh; width: 100px; height: 100px;" src="phone-flip.png"></img></center>
+      <center><p id="overlayText" style="color: white; position: relative; top: 35vh;">Please Rotate Your Screen To Landscape Mode.</p></center>
+    </div>
 
 <!--Acknowledgements-->
 <center><footer id="acknowledgements">Christian M. '21 (User Interface) | Zakariya S. '21 (Backend & Security) | Azam A. '19 (Invention/Project Management)</footer></center>
@@ -59,6 +63,20 @@
 </div>
 
 <script>
+
+var orientation = getOrientation();
+
+if(orientation == "landscape") {
+  overlay.style.display = "none";
+  body.style.overflowX = "auto";
+  body.style.overflowY = "auto";
+}
+else {
+  overlay.style.display = "initial";
+  body.style.overflowX = "hidden";
+  body.style.overflowY = "hidden";
+}
+
 function getOrientation(){
     var orientation = window.innerWidth > window.innerHeight ? "landscape" : "portrait";
     return orientation;
@@ -66,7 +84,6 @@ function getOrientation(){
 
  window.onresize = function(){
    var orientation = getOrientation();
-   alert
 
    if(orientation == "landscape") {
      overlay.style.display = "none";

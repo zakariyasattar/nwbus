@@ -43,6 +43,11 @@ h2 {
   overflow-y: hidden;
 }​
 
+#overlayText {
+  position: relative;
+  top: 50vh;
+}
+
 @media only screen and (orientation:portrait){
   #container {
     height: 100vw;
