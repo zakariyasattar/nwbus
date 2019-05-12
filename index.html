@@ -59,34 +59,25 @@
 </div>
 
 <script>
-//   function doOnOrientationChange() {
-//     switch(window.orientation) {
-//       case 90 || -90:
-//         alert("landscape");
-//         overlay.style.display = "none";
-//         body.style.overflowX = "auto";
-//         body.style.overflowY = "auto";
-//         break;
-//       default:
-//         overlay.style.display = "initial";
-//         body.style.overflowX = "hidden";
-//         body.style.overflowY = "hidden";
-//         break;
-//     }
-// }
-//
-// window.addEventListener('orientationchange', doOnOrientationChange);
-//
-// // Initial execution if needed
-// doOnOrientationChange();
-
 function getOrientation(){
     var orientation = window.innerWidth > window.innerHeight ? "Landscape" : "Portrait";
-    alert(orientation);
     return orientation;
 }
 
- window.onresize = function(){ getOrientation(); }
+ window.onresize = function(){
+   var orientation = getOrientation();
+   
+   if(orientation == "landscape") {
+     overlay.style.display = "none";
+     body.style.overflowX = "auto";
+     body.style.overflowY = "auto";
+   }
+   else {
+     overlay.style.display = "initial";
+     body.style.overflowX = "hidden";
+     body.style.overflowY = "hidden";
+   }
+ }
 
   // Initialize Firebase
   var config = {
