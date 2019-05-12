@@ -34,7 +34,7 @@
 
   </head>
 
-  <body>
+  <body id="body">
     <div id="container">
       <span><img id="logo" src="nwlogo.png" ></img> </span>
 
@@ -51,6 +51,7 @@
 
 <!--Main Bus Image-->
     <center><canvas id ="myCanvas" width="960" height="400" style="border-radius: 12px; border: 1px solid black"></canvas></center>
+    <center><div id="overlay"><p style="color: white;">TESTING</p></div></center>
 
 <!--Acknowledgements-->
 <center><footer id="acknowledgements">Christian M. '21 (User Interface) | Zakariya S. '21 (Backend & Security) | Azam A. '19 (Invention/Project Management)</footer></center>
@@ -58,6 +59,30 @@
 </div>
 
 <script>
+  if(overlay.style.display != "hidden") {
+    body.style.overflowX = "hidden";
+    body.style.overflowY = "hidden";
+  }
+  else {
+    body.style.overflowX = "auto";
+    body.style.overflowY = "auto";
+  }
+
+  function doOnOrientationChange() {
+    switch(window.orientation) {
+      case -90 || 90:
+        alert('landscape');
+        break;
+      default:
+        alert('portrait');
+        break;
+    }
+}
+
+window.addEventListener('orientationchange', doOnOrientationChange);
+
+// Initial execution if needed
+doOnOrientationChange();
 
   // Initialize Firebase
   var config = {
