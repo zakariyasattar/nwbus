@@ -66,13 +66,15 @@ function getOrientation(){
 
  window.onresize = function(){
    var orientation = getOrientation();
-   
+
    if(orientation == "landscape") {
+     alert(orientation);
      overlay.style.display = "none";
      body.style.overflowX = "auto";
      body.style.overflowY = "auto";
    }
    else {
+     alert(orientation);
      overlay.style.display = "initial";
      body.style.overflowX = "hidden";
      body.style.overflowY = "hidden";
