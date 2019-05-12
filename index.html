@@ -80,10 +80,13 @@
 // // Initial execution if needed
 // doOnOrientationChange();
 
-screen.orientation.onchange = function (){
-  // logs 'portrait' or 'landscape'
-  alert(screen.orientation.type.match(/\w+/)[0]);
-};
+function getOrientation(){
+    var orientation = window.innerWidth > window.innerHeight ? "Landscape" : "Portrait";
+    alert(orientation);
+    return orientation;
+}
+
+ window.onresize = function(){ getOrientation(); }
 
   // Initialize Firebase
   var config = {
