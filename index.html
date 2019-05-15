@@ -22,8 +22,6 @@
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
 
-		<span><img id="logo" src="nwlogo.png" ></img> </span>
-
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133322423-2"></script>
     <script>
@@ -36,7 +34,9 @@
 
   </head>
 
-  <body>
+  <body id="body">
+    <div id="container">
+      <span><img id="logo" src="nwlogo.png" ></img> </span>
 
 <!-- header -->
     <h1 id="date"></h1>
@@ -52,11 +52,52 @@
 <!--Main Bus Image-->
     <center><canvas id ="myCanvas" width="960" height="400" style="border-radius: 12px; border: 1px solid black"></canvas></center>
 
+    <div id="overlay">
+      <center><img style="color: white; position: relative; top: 15vh; width: 60vw; height: 60vw;" src="phone-flip.png"></img></center>
+      <center><p id="overlayText" style="color: white; position: relative; top: 15vh; font-size: 10vw;">Please Rotate Your Screen To Landscape Mode.</p></center>
+    </div>
+
+    <!-- <a href="https://play.google.com/store/apps/details?id=com.nwbus.programmingknowledge.easyonlineconverter">ANDROID APP!</a> -->
+
 <!--Acknowledgements-->
 <center><footer id="acknowledgements">Christian M. '21 (User Interface) | Zakariya S. '21 (Backend & Security) | Azam A. '19 (Invention/Project Management)</footer></center>
 <br/>
+</div>
 
 <script>
+
+var orientation = getOrientation();
+
+if(orientation == "landscape") {
+  overlay.style.display = "none";
+  body.style.overflowX = "auto";
+  body.style.overflowY = "auto";
+}
+else {
+  overlay.style.display = "initial";
+  body.style.overflowX = "hidden";
+  body.style.overflowY = "hidden";
+}
+
+function getOrientation(){
+    var orientation = window.innerWidth > window.innerHeight ? "landscape" : "portrait";
+    return orientation;
+}
+
+ window.onresize = function(){
+   var orientation = getOrientation();
+
+   if(orientation == "landscape") {
+     overlay.style.display = "none";
+     body.style.overflowX = "auto";
+     body.style.overflowY = "auto";
+   }
+   else {
+     overlay.style.display = "initial";
+     body.style.overflowX = "hidden";
+     body.style.overflowY = "hidden";
+   }
+ }
 
   // Initialize Firebase
   var config = {
@@ -80,7 +121,7 @@
   var mouseY = 0;
 
   var img = new Image();
-  img.src = "https://i.imgur.com/ZgwCoXp.png";
+  img.src = "canvas_BG.png";
 
   var width = window.innerWidth-20;
   var baseLine = 1440 / 1.5;
