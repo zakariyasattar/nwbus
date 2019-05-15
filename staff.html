@@ -92,18 +92,12 @@
     for(var i = 0; i < 3; i++) {
       for(var j = 0; j < 10; j++) {
         var num = i * 10 + j + 1;
-        // if(num != 25) {
-        //   numOptions.push(new numOption(j, i + 7, num));
-        //   numOptionsNums.push(j);
-        // }
-        // else {
         if(num != 4 && num != 9 && num != 14 && num != 16 && num != 29 && num != 30) {
 	  numOptions.push(new numOption(j, i + 7, num));
           numOptionsNums.push(num);
       	}
 	  numOptions.push(new numOption(5, 8, "17OF"));
           numOptionsNums.push("17OF");
-        //}
       }
     }
 
