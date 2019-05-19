@@ -236,6 +236,7 @@
         for(var i = 0; i < numOptions.length; i++) {
           if(mouseX > numOptions[i].x * unit && mouseY > numOptions[i].y * unit && mouseX < (numOptions[i].x + numOptions[i].width) * unit  && mouseY < (numOptions[i].y + numOptions[i].height) * unit) {
             holding = i;
+	    console.log("Done");
             waitingBus = null;
 
             numOptions[i].color = "red";
