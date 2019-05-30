@@ -52,10 +52,10 @@
 <!--Main Bus Image-->
     <center><canvas id ="myCanvas" width="960" height="400" style="border-radius: 12px; border: 1px solid black"></canvas></center>
 
-    <!-- <div id="overlay">
+    <div id="overlay">
       <center><img style="color: white; position: relative; top: 15vh; width: 60vw; height: 60vw;" src="phone-flip.png"></img></center>
       <center><p id="overlayText" style="color: white; position: relative; top: 15vh; font-size: 10vw;">Please Rotate Your Screen To Landscape Mode.</p></center>
-    </div> -->
+    </div>
 
     <!-- <a href="https://play.google.com/store/apps/details?id=com.nwbus.programmingknowledge.easyonlineconverter">ANDROID APP!</a> -->
 
@@ -65,39 +65,39 @@
 </div>
 
 <script>
-//
-// var orientation = getOrientation();
-//
-// if(orientation == "landscape") {
-//   overlay.style.display = "none";
-//   body.style.overflowX = "auto";
-//   body.style.overflowY = "auto";
+
+var orientation = getOrientation();
+
+if(orientation == "landscape") {
+  overlay.style.display = "none";
+  body.style.overflowX = "auto";
+  body.style.overflowY = "auto";
+}
+else {
+  overlay.style.display = "initial";
+  body.style.overflowX = "hidden";
+  body.style.overflowY = "hidden";
+}
+
+function getOrientation(){
+    var orientation = window.innerWidth > window.innerHeight ? "landscape" : "portrait";
+    return orientation;
 // }
-// else {
-//   overlay.style.display = "initial";
-//   body.style.overflowX = "hidden";
-//   body.style.overflowY = "hidden";
-// }
-//
-// function getOrientation(){
-//     var orientation = window.innerWidth > window.innerHeight ? "landscape" : "portrait";
-//     return orientation;
-// // }
-//
-//  window.onresize = function(){
-//    var orientation = getOrientation();
-//
-//    if(orientation == "landscape") {
-//      overlay.style.display = "none";
-//      body.style.overflowX = "auto";
-//      body.style.overflowY = "auto";
-//    }
-//    else {
-//      overlay.style.display = "initial";
-//      body.style.overflowX = "hidden";
-//      body.style.overflowY = "hidden";
-//    }
-//  }
+
+ window.onresize = function(){
+   var orientation = getOrientation();
+
+   if(orientation == "landscape") {
+     overlay.style.display = "none";
+     body.style.overflowX = "auto";
+     body.style.overflowY = "auto";
+   }
+   else {
+     overlay.style.display = "initial";
+     body.style.overflowX = "hidden";
+     body.style.overflowY = "hidden";
+   }
+ }
 
   // Initialize Firebase
   var config = {
